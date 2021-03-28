@@ -1,0 +1,1040 @@
+{
+	"info": {
+		"_postman_id": "b0dc4c1b-217b-44d6-86b4-c07e2b093497",
+		"name": "Alisa-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "list of all channels",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "df7fe2f9-c405-475b-af68-70fb1ca85dc1",
+						"exec": [
+							"",
+							"pm.sendRequest(\"https://fvau-api-prod.switch.tv/content/v1/channels\", function (err, response) {",
+							"    ",
+							"    let allChannels = response.json().data;",
+							"",
+							"     triplets = []",
+							"     allChannels.forEach(function(key, value){",
+							"         triplets.push(key.dvb_triplet)",
+							"     });",
+							"     ",
+							"    for (let alisa = 0; alisa < 3; alisa++) {",
+							"        ",
+							"        if (alisa === 0) { ",
+							"            pm.environment.set(\"randomTriplet1\", triplets[Math.floor(Math.random() * triplets.length)]) ",
+							"        }",
+							"        else if (alisa === 1) { ",
+							"            pm.environment.set(\"randomTriplet2\", triplets[Math.floor(Math.random() * triplets.length)]) ",
+							"        }",
+							"        else if (alisa === 2) {",
+							"            pm.environment.set(\"randomTriplet3\", triplets[Math.floor(Math.random() * triplets.length)])",
+							"        }",
+							"    }",
+							"",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/channels",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"channels"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channel 1 day 1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"// importing the moment function to capture current time in ISO format",
+							"let moment = require('moment');",
+							"",
+							"// looping 6 times to add additional day to the current date",
+							"// assigning the new date to a new variable and saving the new varialble to the list enviroment varibales",
+							"// the new variables are all individually assigned to the specific epg URLs to return EPG titles for a specific date",
+							"",
+							"for (let day = 0; day < 6; day++) {",
+							"    if (day === 0) { ",
+							"        pm.environment.set(\"currentdate\", moment()); ",
+							"    }",
+							"    else if (day === 1) { ",
+							"        pm.environment.set(\"currentdate2\", moment().add(1, 'days')); ",
+							"    }",
+							"    else if (day === 2) {",
+							"        pm.environment.set(\"currentdate3\", moment().add(2, 'days'));",
+							"    }",
+							"    else if (day === 3) { ",
+							"        pm.environment.set(\"currentdate4\", moment().add(3, 'days')); ",
+							"    }",
+							"    else if (day === 4) {",
+							"        pm.environment.set(\"currentdate5\", moment().add(4, 'days'));",
+							"    }",
+							"    else if (day === 5) { ",
+							"        pm.environment.set(\"currentdate6\", moment().add(5, 'days')); ",
+							"    }",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet1}}/?start={{currentdate}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet1}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channel 1 day 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"",
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet1}}/?start={{currentdate2}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet1}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate2}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channel 1 day 3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"",
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet1}}/?start={{currentdate3}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet1}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate3}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channel 1 day 4",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"",
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet1}}/?start={{currentdate4}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet1}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate4}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channel 1 day 5",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"",
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet1}}/?start={{currentdate5}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet1}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate5}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channel 1 day 6",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"",
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet1}}/?start={{currentdate6}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet1}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate6}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 2 day 1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet2}}/?start={{currentdate}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet2}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 2 day 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet2}}/?start={{currentdate2}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet2}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate2}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 2 day 3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet2}}/?start={{currentdate3}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet2}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate3}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 2 day 4",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet2}}/?start={{currentdate4}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet2}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate4}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 2 day 5",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet2}}/?start={{currentdate5}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet2}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate5}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 2 day 6",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet2}}/?start={{currentdate6}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet2}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate6}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 3 day 1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet3}}/?start={{currentdate}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet3}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 3 day 2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet3}}/?start={{currentdate2}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet3}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate2}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 3 day 3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet3}}/?start={{currentdate3}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet3}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate3}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 3 day 4",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet3}}/?start={{currentdate4}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet3}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate4}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 3 day 5",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet3}}/?start={{currentdate5}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet3}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate5}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "epg titles from channels 3 day 6",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62d83e67-9f4f-47fe-a654-5171c752ea86",
+						"exec": [
+							"var moment = require('moment');",
+							"pm.environment.set('currentdate', moment());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://fvau-api-prod.switch.tv/content/v1/epgs/{{randomTriplet3}}/?start={{currentdate6}}&sort={{sort}}",
+					"protocol": "https",
+					"host": [
+						"fvau-api-prod",
+						"switch",
+						"tv"
+					],
+					"path": [
+						"content",
+						"v1",
+						"epgs",
+						"{{randomTriplet3}}",
+						""
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "{{currentdate6}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{sort}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
